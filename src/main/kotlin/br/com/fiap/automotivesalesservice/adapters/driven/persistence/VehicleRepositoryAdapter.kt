@@ -2,9 +2,12 @@ package br.com.fiap.automotivesalesservice.adapters.driven.persistence
 
 import br.com.fiap.automotivesalesservice.core.application.ports.driven.VehicleRepository
 import br.com.fiap.automotivesalesservice.core.domain.vehicle.Vehicle
-import java.util.UUID
+import jakarta.inject.Named
+import java.util.*
 
-class VehicleRepositoryAdapter(private val jpaRepository: JpaVehicleRepository) : VehicleRepository {
+@Named
+class VehicleRepositoryAdapter(private val jpaRepository: JpaVehicleRepository) :
+    VehicleRepository {
     override fun save(vehicle: Vehicle) {
         val entity = VehicleEntity.fromDomain(vehicle)
         jpaRepository.save(entity)

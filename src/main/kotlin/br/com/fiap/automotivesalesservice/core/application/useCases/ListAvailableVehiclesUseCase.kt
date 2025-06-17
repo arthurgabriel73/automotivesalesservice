@@ -7,6 +7,8 @@ import br.com.fiap.automotivesalesservice.core.domain.vehicle.Vehicle
 class ListAvailableVehiclesUseCase(val vehicleRepository: VehicleRepository) :
     ListAvailableVehiclesDriverPort {
     override fun execute(): List<Vehicle> {
-        return vehicleRepository.listAvailableVehicles()
+        val list = vehicleRepository.listAvailableVehicles()
+        println(list)
+        return list
     }
 }

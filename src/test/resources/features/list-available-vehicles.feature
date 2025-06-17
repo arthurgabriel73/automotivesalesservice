@@ -6,7 +6,7 @@ Feature: List Available Vehicles
   Scenario: Successfully list available vehicles ordered by price
     Given the system has multiple vehicles available for order
     When the customer requests the list of available vehicles
-    Then the system should return a list of all available vehicles
+    Then the system should return a list of all available vehicles ordered by price in ascending order
 
   Scenario: No vehicles available for order
     Given the system has no vehicles available for order

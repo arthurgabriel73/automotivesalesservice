@@ -6,7 +6,7 @@ Feature: List Sold Vehicles
   Scenario: Successfully list all sold vehicles
     Given the system has multiple sold vehicles
     When the partner requests to list all sold vehicles
-    Then the system should return a list of all sold vehicles
+    Then the system should return a list of all sold vehicles ordered by price in ascending order
 
 
   Scenario: No sold vehicles available

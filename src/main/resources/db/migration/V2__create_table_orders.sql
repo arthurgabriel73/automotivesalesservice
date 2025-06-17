@@ -5,5 +5,5 @@ CREATE TABLE orders
     customer_id VARCHAR(50)              NOT NULL,
     status      VARCHAR(50)              NOT NULL,
     created_at  TIMESTAMP WITH TIME ZONE NOT NULL,
-    updated_at  TIMESTAMP WITH TIME ZONE NOT NULL
+    updated_at  TIMESTAMP WITH TIME ZONE
 );

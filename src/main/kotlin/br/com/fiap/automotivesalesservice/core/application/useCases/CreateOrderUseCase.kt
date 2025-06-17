@@ -6,6 +6,7 @@ import br.com.fiap.automotivesalesservice.core.application.ports.driver.CreateOr
 import br.com.fiap.automotivesalesservice.core.application.ports.driver.models.input.CreateOrderInput
 import br.com.fiap.automotivesalesservice.core.application.ports.driver.models.output.CreateOrderOutput
 import br.com.fiap.automotivesalesservice.core.application.useCases.exceptions.VehicleNotAvailableException
+import br.com.fiap.automotivesalesservice.core.application.useCases.exceptions.VehicleNotFoundException
 import br.com.fiap.automotivesalesservice.core.domain.order.Order
 import br.com.fiap.automotivesalesservice.core.domain.order.OrderStatus
 import java.time.Instant
@@ -32,10 +33,10 @@ class CreateOrderUseCase(
 
     private fun requireVehicleIsAvailable(vehicleId: UUID) {
         val vehicle = vehicleRepository.findById(vehicleId)
-        if (vehicle == null || vehicle.status != "AVAILABLE") {
+        if (vehicle == null) throw VehicleNotFoundException("Vehicle with ID $vehicleId not found.")
+        if (vehicle.status != "AVAILABLE")
             throw VehicleNotAvailableException(
                 "Vehicle with ID $vehicleId is not available for order."
             )
-        }
     }
 }

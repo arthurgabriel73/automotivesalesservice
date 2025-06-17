@@ -22,6 +22,7 @@ import java.util.*
 class OrderVehicleAcceptanceTest {
 
     private val ordersUrl = "/orders"
+    private val vehiclesUrl = "/vehicles"
 
     @Autowired private lateinit var testRestTemplate: TestRestTemplate
 
@@ -35,9 +36,10 @@ class OrderVehicleAcceptanceTest {
 
     @Given("the system has a valid vehicle available for order")
     fun `the system has a valid vehicle available for order`() {
+        vehicleId = UUID.randomUUID().toString()
         val availableVehicle =
             mapOf(
-                "vehicleId" to UUID.randomUUID().toString(),
+                "vehicleId" to vehicleId,
                 "plate" to "HJK-1234",
                 "price" to 10000,
                 "priceCurrency" to "BRL",
@@ -51,13 +53,7 @@ class OrderVehicleAcceptanceTest {
                 "status" to "AVAILABLE",
                 "createdAt" to "2023-10-01T12:00:00Z",
             )
-        vehicleId =
-            testRestTemplate
-                .postForEntity(ordersUrl, availableVehicle, String::class.java)
-                .body
-                .toString()
-                .substringAfterLast("vehicleId\":\"")
-                .substringBefore("\"")
+        testRestTemplate.postForEntity(vehiclesUrl, availableVehicle, String::class.java)
     }
 
     @When("the customer submits the vehicle order form")
@@ -73,6 +69,7 @@ class OrderVehicleAcceptanceTest {
 
     @Given("the system has an invalid vehicle order form missing required fields")
     fun `the system has an invalid vehicle order form missing required fields`() {
+        vehicleId = UUID.randomUUID().toString()
         requestInput = mapOf("vehicleId" to vehicleId) // Missing customerId
     }
 
@@ -118,5 +115,16 @@ class OrderVehicleAcceptanceTest {
     fun `the system should reject the order with an out of stock error`() {
         response.statusCode shouldBe HttpStatus.CONFLICT
         response.body shouldBe "The vehicle is out of stock and cannot be ordered."
+    }
+
+    @Given("the customer has a non-existent vehicle Id")
+    fun `the customer has a non-existent vehicle Id`() {
+        vehicleId = UUID.randomUUID().toString() // Simulating a non-existent vehicle
+        requestInput = mapOf("vehicleId" to vehicleId, "customerId" to "1234567890")
+    }
+
+    @Then("the system should reject the order with a not found error")
+    fun `the system should reject the order with a not found error`() {
+        response.statusCode shouldBe HttpStatus.NOT_FOUND
     }
 }

@@ -12,4 +12,4 @@ Feature: List Sold Vehicles
   Scenario: No sold vehicles available
     Given the system has no sold vehicles
     When the partner requests to list all sold vehicles
-    Then the system should return an empty list
+    Then the system should return an empty sold vehicles list

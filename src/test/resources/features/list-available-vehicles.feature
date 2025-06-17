@@ -11,4 +11,4 @@ Feature: List Available Vehicles
   Scenario: No vehicles available for order
     Given the system has no vehicles available for order
     When the customer requests the list of available vehicles
-    Then the system should return an empty list
+    Then the system should return an empty available vehicles list

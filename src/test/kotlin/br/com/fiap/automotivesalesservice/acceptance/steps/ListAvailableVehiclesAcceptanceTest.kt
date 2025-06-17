@@ -86,7 +86,7 @@ class ListAvailableVehiclesAcceptanceTest {
         )
     }
 
-    @Then("the system should return an empty list")
+    @Then("the system should return an empty available vehicles list")
     fun `the system should return an empty list`() {
         response.statusCode shouldBe HttpStatus.OK
         response.body shouldBe "[]"

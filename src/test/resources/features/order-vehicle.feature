@@ -17,3 +17,8 @@ Feature: Order Vehicle
     Given the system has a vehicle that is out of stock
     When the customer attempts to order the vehicle
     Then the system should reject the order with an out of stock error
+
+  Scenario: Fail to order a non-existent vehicle
+    Given the customer has a non-existent vehicle Id
+    When the customer attempts to order the vehicle
+    Then the system should reject the order with a not found error

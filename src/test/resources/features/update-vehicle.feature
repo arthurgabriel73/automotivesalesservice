@@ -14,6 +14,7 @@ Feature: Update Vehicle
     Then the system should reject the update with a bad request error
 
   Scenario: Fail to update a non-existent vehicle
-    Given the partner attempts to update a non-existent vehicle
+    Given the partner has a valid vehicle for updating
+    And the partner attempts to update a non-existent vehicle
     When the partner submits the vehicle update form
     Then the system should reject the update with a not found error

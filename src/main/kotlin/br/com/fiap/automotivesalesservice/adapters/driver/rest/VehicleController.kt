@@ -40,7 +40,7 @@ class VehicleController(
         return listSoldVehiclesDriverPort.execute()
     }
 
-    @PutMapping("/update/{vehicleId}")
+    @PutMapping("/{vehicleId}")
     @ResponseStatus(HttpStatus.OK)
     @Transactional
     fun updateVehicle(

@@ -52,6 +52,7 @@ class UpdateVehicleAcceptanceTest {
                 "createdAt" to "2023-10-01T12:00:00Z",
                 "updatedAt" to "2023-11-01T12:00:00Z",
             )
+        response = testRestTemplate.postForEntity(vehiclesUrl, requestInput, String::class.java)
     }
 
     @When("the partner submits the vehicle update form")

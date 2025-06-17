@@ -9,3 +9,8 @@ data class VehicleNotFoundException(
     override val message: String = "Vehicle not found.",
     override val cause: Throwable? = null,
 ) : ApplicationException(message, cause)
+
+data class VehicleNotAvailableException(
+    override val message: String = "Vehicle is not available.",
+    override val cause: Throwable? = null,
+) : ApplicationException(message, cause)

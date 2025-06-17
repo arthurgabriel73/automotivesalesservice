@@ -1,14 +1,9 @@
 package br.com.fiap.automotivesalesservice.configuration.ioc
 
+import br.com.fiap.automotivesalesservice.core.application.ports.driven.OrderRepository
 import br.com.fiap.automotivesalesservice.core.application.ports.driven.VehicleRepository
-import br.com.fiap.automotivesalesservice.core.application.ports.driver.ListAvailableVehiclesDriverPort
-import br.com.fiap.automotivesalesservice.core.application.ports.driver.ListSoldVehiclesDriverPort
-import br.com.fiap.automotivesalesservice.core.application.ports.driver.SaveVehicleDriverPort
-import br.com.fiap.automotivesalesservice.core.application.ports.driver.UpdateVehicleDriverPort
-import br.com.fiap.automotivesalesservice.core.application.useCases.ListAvailableVehiclesUseCase
-import br.com.fiap.automotivesalesservice.core.application.useCases.ListSoldVehiclesUseCase
-import br.com.fiap.automotivesalesservice.core.application.useCases.SaveVehicleUseCase
-import br.com.fiap.automotivesalesservice.core.application.useCases.UpdateVehicleUseCase
+import br.com.fiap.automotivesalesservice.core.application.ports.driver.*
+import br.com.fiap.automotivesalesservice.core.application.useCases.*
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
@@ -35,5 +30,13 @@ class UseCasesBeanConfiguration {
     @Bean
     fun updateVehicleUseCase(vehicleRepository: VehicleRepository): UpdateVehicleDriverPort {
         return UpdateVehicleUseCase(vehicleRepository)
+    }
+
+    @Bean
+    fun createOrderUseCase(
+        orderRepository: OrderRepository,
+        vehicleRepository: VehicleRepository,
+    ): CreateOrderDriverPort {
+        return CreateOrderUseCase(orderRepository, vehicleRepository)
     }
 }

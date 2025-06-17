@@ -5,6 +5,7 @@ Feature: Order Vehicle
 
   Scenario: Successfully order a vehicle
     Given the system has a valid vehicle available for order
+    And the customer has a valid vehicle order form
     When the customer submits the vehicle order form
     Then the vehicle should be ordered successfully
 
@@ -15,6 +16,7 @@ Feature: Order Vehicle
 
   Scenario: Fail to order a vehicle that is out of stock
     Given the system has a vehicle that is out of stock
+    And the customer has a valid vehicle order form
     When the customer attempts to order the vehicle
     Then the system should reject the order with an out of stock error
 

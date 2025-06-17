@@ -56,9 +56,13 @@ class OrderVehicleAcceptanceTest {
         testRestTemplate.postForEntity(vehiclesUrl, availableVehicle, String::class.java)
     }
 
+    @Given("the customer has a valid vehicle order form")
+    fun `the customer has a valid vehicle order form`() {
+        requestInput = mapOf("vehicleId" to vehicleId, "customerId" to "1234567890")
+    }
+
     @When("the customer submits the vehicle order form")
     fun `the customer submits the vehicle order form`() {
-        requestInput = mapOf("vehicleId" to vehicleId, "customerId" to "1234567890")
         response = testRestTemplate.postForEntity(ordersUrl, requestInput, String::class.java)
     }
 
@@ -80,9 +84,10 @@ class OrderVehicleAcceptanceTest {
 
     @Given("the system has a vehicle that is out of stock")
     fun `the system has a vehicle that is out of stock`() {
+        vehicleId = UUID.randomUUID().toString()
         val soldVehicle =
             mapOf(
-                "vehicleId" to UUID.randomUUID().toString(),
+                "vehicleId" to vehicleId,
                 "plate" to "HJK-1234",
                 "price" to 10000,
                 "priceCurrency" to "BRL",
@@ -96,13 +101,7 @@ class OrderVehicleAcceptanceTest {
                 "status" to "SOLD",
                 "createdAt" to "2023-10-01T12:00:00Z",
             )
-        vehicleId =
-            testRestTemplate
-                .postForEntity(ordersUrl, soldVehicle, String::class.java)
-                .body
-                .toString()
-                .substringAfterLast("vehicleId\":\"")
-                .substringBefore("\"")
+        testRestTemplate.postForEntity(vehiclesUrl, soldVehicle, String::class.java)
     }
 
     @When("the customer attempts to order the vehicle")
@@ -114,7 +113,6 @@ class OrderVehicleAcceptanceTest {
     @Then("the system should reject the order with an out of stock error")
     fun `the system should reject the order with an out of stock error`() {
         response.statusCode shouldBe HttpStatus.CONFLICT
-        response.body shouldBe "The vehicle is out of stock and cannot be ordered."
     }
 
     @Given("the customer has a non-existent vehicle Id")

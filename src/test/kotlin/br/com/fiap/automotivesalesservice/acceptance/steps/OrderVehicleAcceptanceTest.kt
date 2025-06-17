@@ -1,10 +1,8 @@
 package br.com.fiap.automotivesalesservice.acceptance.steps
 
-import io.cucumber.java.Before
 import io.cucumber.java.en.Given
 import io.cucumber.java.en.Then
 import io.cucumber.java.en.When
-import io.cucumber.spring.CucumberContextConfiguration
 import io.kotest.matchers.shouldBe
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -19,7 +17,6 @@ import org.testcontainers.junit.jupiter.Testcontainers
 import java.util.*
 
 @Testcontainers
-@CucumberContextConfiguration
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Transactional
 class OrderVehicleAcceptanceTest {
@@ -34,12 +31,6 @@ class OrderVehicleAcceptanceTest {
 
     companion object {
         @Container @ServiceConnection val postgres = PostgreSQLContainer("postgres:16.3")
-    }
-
-    @Before
-    fun `should connection be established`() {
-        postgres.isCreated shouldBe true
-        postgres.isRunning shouldBe true
     }
 
     @Given("the system has a valid vehicle available for order")

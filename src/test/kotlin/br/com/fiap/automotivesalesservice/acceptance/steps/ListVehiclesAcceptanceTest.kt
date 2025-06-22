@@ -22,7 +22,7 @@ import java.util.*
 @Testcontainers
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
-class ListSoldVehiclesAcceptanceTest {
+class ListVehiclesAcceptanceTest {
     private val vehiclesUrl = "/vehicles"
 
     @Autowired private lateinit var testRestTemplate: TestRestTemplate
@@ -40,6 +40,27 @@ class ListSoldVehiclesAcceptanceTest {
         jdbcTemplate.execute("DELETE FROM vehicles")
     }
 
+    @Given("the system has multiple vehicles available for order")
+    fun `the system has multiple vehicles available for order`() {
+        createVehicles(
+            listOf(
+                vehicleRequest(price = 30000L, make = "Fiat", model = "Uno", status = "AVAILABLE"),
+                vehicleRequest(
+                    price = 25000L,
+                    make = "Ford",
+                    model = "Fiesta",
+                    status = "AVAILABLE",
+                ),
+                vehicleRequest(
+                    price = 28000L,
+                    make = "Volkswagen",
+                    model = "Gol",
+                    status = "AVAILABLE",
+                ),
+            )
+        )
+    }
+
     @Given("the system has multiple sold vehicles")
     fun `the system has multiple sold vehicles`() {
         createVehicles(
@@ -51,9 +72,36 @@ class ListSoldVehiclesAcceptanceTest {
         )
     }
 
+    @Given("the system has no sold vehicles")
+    fun `the system has no sold vehicles`() {
+        createVehicles(
+            listOf(
+                vehicleRequest(price = 30000L, make = "Fiat", model = "Uno", status = "AVAILABLE")
+            )
+        )
+    }
+
     @When("the partner requests to list all sold vehicles")
     fun `the partner requests to list all sold vehicles`() {
         response = testRestTemplate.getForEntity("$vehiclesUrl/sold", String::class.java)
+    }
+
+    @When("the customer requests the list of available vehicles")
+    fun `the customer requests the list of available vehicles`() {
+        response = testRestTemplate.getForEntity("$vehiclesUrl/available", String::class.java)
+    }
+
+    @Then(
+        "the system should return a list of all available vehicles ordered by price in ascending order"
+    )
+    fun `the system should return a list of all available vehicles ordered by price in ascending order`() {
+        response.statusCode shouldBe HttpStatus.OK
+        response.body!!.let { body ->
+            body shouldContain "Fiat"
+            body shouldContain "Ford"
+            body shouldContain "Volkswagen"
+            extractPrices(body) shouldBe extractPrices(body).sorted()
+        }
     }
 
     @Then(
@@ -69,17 +117,21 @@ class ListSoldVehiclesAcceptanceTest {
         }
     }
 
-    @Given("the system has no sold vehicles")
-    fun `the system has no sold vehicles`() {
+    @Then("the system should return an empty sold vehicles list")
+    fun `the system should return an empty sold vehicles list`() {
+        response.statusCode shouldBe HttpStatus.OK
+        response.body shouldBe "[]"
+    }
+
+    @Given("the system has no vehicles available for order")
+    fun `the system has no vehicles available for order`() {
         createVehicles(
-            listOf(
-                vehicleRequest(price = 30000L, make = "Fiat", model = "Uno", status = "AVAILABLE")
-            )
+            listOf(vehicleRequest(price = 30000L, make = "Fiat", model = "Uno", status = "SOLD"))
         )
     }
 
-    @Then("the system should return an empty sold vehicles list")
-    fun `the system should return an empty sold vehicles list`() {
+    @Then("the system should return an empty available vehicles list")
+    fun `the system should return an empty list`() {
         response.statusCode shouldBe HttpStatus.OK
         response.body shouldBe "[]"
     }

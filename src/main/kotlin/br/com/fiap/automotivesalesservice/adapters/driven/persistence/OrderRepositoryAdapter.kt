@@ -11,6 +11,10 @@ class OrderRepositoryAdapter(private val jpaRepository: JpaOrderRepository) : Or
         return jpaRepository.save(OrderEntity.fromDomain(order)).toDomain().orderId
     }
 
+    override fun findById(orderId: UUID): Order? {
+        return jpaRepository.findById(orderId).orElse(null)?.toDomain()
+    }
+
     override fun update(order: Order) {
         jpaRepository.save(OrderEntity.fromDomain(order)).toDomain()
     }

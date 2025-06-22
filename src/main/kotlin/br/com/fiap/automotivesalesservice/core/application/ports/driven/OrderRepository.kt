@@ -6,5 +6,7 @@ import java.util.*
 interface OrderRepository {
     fun save(order: Order): UUID
 
+    fun findById(orderId: UUID): Order?
+
     fun update(order: Order)
 }

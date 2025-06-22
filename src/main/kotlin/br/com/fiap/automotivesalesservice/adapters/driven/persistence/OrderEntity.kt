@@ -2,9 +2,7 @@ package br.com.fiap.automotivesalesservice.adapters.driven.persistence
 
 import br.com.fiap.automotivesalesservice.core.domain.order.Order
 import br.com.fiap.automotivesalesservice.core.domain.order.OrderStatus
-import jakarta.persistence.Entity
-import jakarta.persistence.Id
-import jakarta.persistence.Table
+import jakarta.persistence.*
 import java.time.Instant
 import java.util.*
 
@@ -14,7 +12,7 @@ data class OrderEntity(
     @Id val orderId: UUID,
     val vehicleId: UUID,
     val customerId: String,
-    val status: OrderStatus,
+    @Enumerated(EnumType.STRING) val status: OrderStatus,
     val createdAt: Instant,
     val updatedAt: Instant? = null,
 ) {

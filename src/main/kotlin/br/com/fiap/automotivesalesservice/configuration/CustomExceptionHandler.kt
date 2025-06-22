@@ -1,5 +1,6 @@
 package br.com.fiap.automotivesalesservice.configuration
 
+import br.com.fiap.automotivesalesservice.core.application.useCases.exceptions.OrderNotFoundException
 import br.com.fiap.automotivesalesservice.core.application.useCases.exceptions.VehicleNotAvailableException
 import br.com.fiap.automotivesalesservice.core.application.useCases.exceptions.VehicleNotFoundException
 import org.springframework.http.HttpHeaders
@@ -25,6 +26,14 @@ class CustomExceptionHandler : ResponseEntityExceptionHandler() {
         exception: VehicleNotAvailableException
     ): ResponseEntity<ErrorMessage> {
         val errorMessage = ErrorMessage(status = HttpStatus.CONFLICT, error = exception.message)
+        return ResponseEntity(errorMessage, HttpHeaders(), errorMessage.status)
+    }
+
+    @ExceptionHandler(OrderNotFoundException::class)
+    fun handleOrderNotFoundException(
+        exception: OrderNotFoundException
+    ): ResponseEntity<ErrorMessage> {
+        val errorMessage = ErrorMessage(status = HttpStatus.NOT_FOUND, error = exception.message)
         return ResponseEntity(errorMessage, HttpHeaders(), errorMessage.status)
     }
 }

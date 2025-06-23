@@ -9,13 +9,13 @@ services:
       POSTGRES_PASSWORD: password
       POSTGRES_DB: automotivesalesservice
     ports:
-      - "5433:5432"
+      - "5432:5432"
 
-#  automotivesalesservice:
-#    image: arthurgabriel73/automotivesalesservice:1.0
-#    depends_on:
-#      - postgres
-#    environment:
-#      DATASOURCE_URL: "postgres"
-#    ports:
-#      - "8080:8080"
+  automotivesalesservice:
+    image: arthurgabriel73/automotivesalesservice:1.0
+    depends_on:
+      - postgres
+    environment:
+      DATASOURCE_URL: "postgres"
+    ports:
+      - "8080:8080"
